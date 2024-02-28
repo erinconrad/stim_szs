@@ -122,6 +122,9 @@ for i = 1:npts
     
 end
 
+legend([sponp,stimp],{'Spontaneous','Stimulation-induced'},'fontsize',20,...
+    'location','southeast')
+
 yticks(1:length(sem_cats))
 yticklabels(sem_cats)
 xticks(1:npts)
