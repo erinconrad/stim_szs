@@ -70,6 +70,32 @@ end
 nszs_total = length(unique(T.szNum));
 assert(nszs_total == sum(stim_sz_numbers)+sum(spon_sz_numbers)+sum(other_sz_numbers))
 
+%% Make a table
+% Define order of sz semiology
+sem_cats = {'subclinical','FAS','unknown','FIAS','FBTCS'};
+oT_spon = zeros(npts,length(sem_cats));
+
+for i = 1:npts
+    for j = 1:length(spon_sz_semiology{i})
+        matching_idx = find(strcmp(spon_sz_semiology{i}{j},sem_cats));
+        oT_spon(i,matching_idx) = oT_spon(i,matching_idx) + 1;
+    end
+end
+
+oT_stim = zeros(npts,length(sem_cats));
+
+for i = 1:npts
+    for j = 1:length(stim_sz_semiology{i})
+        matching_idx = find(strcmp(stim_sz_semiology{i}{j},sem_cats));
+        oT_stim(i,matching_idx) = oT_stim(i,matching_idx) + 1;
+    end
+end
+
+oT_spon = array2table(oT_spon,'VariableNames',sem_cats);
+oT_stim = array2table(oT_stim,'VariableNames',sem_cats);
+writetable(oT_spon,'../results/sponsz.csv')
+writetable(oT_stim,'../results/stimsz.csv')
+
 %% Plot of semiology
 % Define order of sz semiology
 sem_cats = {'subclinical','FAS','unknown','FIAS','FBTCS'};
@@ -93,6 +119,7 @@ end
 figure
 set(gcf,'position',[1 1 1300 450])
 
+
 % Loop over patients
 for i = 1:npts
     % Loop over spon szs
@@ -102,7 +129,7 @@ for i = 1:npts
             sz_pos = find(ismember(sem_cats,spon_sz_semiology{i}{is}));
 
             % Plot it, and add some jitter
-            plot(i+ randn*0.05,sz_pos + randn*0.05,'ko','markersize',11)
+            sponp = plot(i+ randn*0.05,sz_pos + randn*0.05,'ko','markersize',11);
             hold on
         end
     end
@@ -114,7 +141,7 @@ for i = 1:npts
             sz_pos = find(ismember(sem_cats,stim_sz_semiology{i}{is}));
 
             % Plot it, and add some jitter
-            plot(i+ randn*0.05,sz_pos + randn*0.05,'r*','markersize',11,'linewidth',1)
+            stimp = plot(i+ randn*0.05,sz_pos + randn*0.05,'r*','markersize',11,'linewidth',1);
             hold on
         end
     end
