@@ -44,7 +44,6 @@ for ai = 1:n_layers
     count = 0;
     
     while 1 % while loop because ieeg only lets you pull 250 at once
-        clear event % important!
         
         % ask it to pull next (up to 250) events after count
         if count == 0

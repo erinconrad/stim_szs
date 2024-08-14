@@ -1,6 +1,6 @@
 %% Get the table
 T = readtable('../data/sz_annotations_erin_notes.xlsx');
-
+% Missing 261, 266, 267, 273
 
 %% Get number of unique patients
 pnum = T.pnum;
@@ -99,6 +99,7 @@ writetable(oT_stim,'../results/stimsz.csv')
 %% Plot of semiology
 % Define order of sz semiology
 sem_cats = {'subclinical','FAS','unknown','FIAS','FBTCS'};
+sem_pretty = {'Subclinical','Retained awareness','Unknown awareness','Impaired awareness','Convulsion'};
 
 % make sure I'm not missing any types
 for i = 1:npts
@@ -129,7 +130,7 @@ for i = 1:npts
             sz_pos = find(ismember(sem_cats,spon_sz_semiology{i}{is}));
 
             % Plot it, and add some jitter
-            sponp = plot(i+ randn*0.05,sz_pos + randn*0.05,'ko','markersize',11);
+            sponp = plot(i+ randn*0.05,sz_pos + randn*0.05,'ko','markersize',18);
             hold on
         end
     end
@@ -141,7 +142,7 @@ for i = 1:npts
             sz_pos = find(ismember(sem_cats,stim_sz_semiology{i}{is}));
 
             % Plot it, and add some jitter
-            stimp = plot(i+ randn*0.05,sz_pos + randn*0.05,'r*','markersize',11,'linewidth',1);
+            stimp = plot(i+ randn*0.05,sz_pos + randn*0.05,'r*','markersize',18,'linewidth',1);
             hold on
         end
     end
@@ -153,9 +154,10 @@ legend([sponp,stimp],{'Spontaneous','Stimulation-induced'},'fontsize',20,...
     'location','southeast')
 
 yticks(1:length(sem_cats))
-yticklabels(sem_cats)
+yticklabels(sem_pretty)
 xticks(1:npts)
-xticklabels(unique_pnums)
+%xticklabels(unique_pnums)
+xticklabels(1:npts)
 set(gca,'fontsize',20)
 xlabel('Patient ID')
 
